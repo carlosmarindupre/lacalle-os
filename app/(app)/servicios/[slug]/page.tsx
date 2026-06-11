@@ -8,6 +8,9 @@ const MODULOS_PROPIOS = [
   "asesoria-estrategica",
   "paid-media",
   "diseno-y-contenidos",
+  "analitica",
+  "desarrollo-web",
+  "email-marketing",
 ];
 
 export function generateStaticParams() {

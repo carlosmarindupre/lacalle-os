@@ -90,7 +90,7 @@ export default function KanbanTareas({
           onChange={(e) => setAsignado(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && agregar()}
           placeholder="Asignado"
-          className="w-28 rounded-md border border-line bg-panel2 px-3 py-2 text-sm placeholder:text-dim transition-colors focus:border-turquesa"
+          className="w-full rounded-md border border-line bg-panel2 px-3 py-2 text-sm placeholder:text-dim transition-colors focus:border-turquesa sm:w-28"
         />
         <input
           type="date"
@@ -103,7 +103,7 @@ export default function KanbanTareas({
           onChange={(e) => setArchivoUrl(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && agregar()}
           placeholder="Link de la pieza (Drive / Figma)"
-          className="w-52 rounded-md border border-line bg-panel2 px-3 py-2 text-sm placeholder:text-dim transition-colors focus:border-turquesa"
+          className="w-full rounded-md border border-line bg-panel2 px-3 py-2 text-sm placeholder:text-dim transition-colors focus:border-turquesa sm:w-52"
         />
         <button
           onClick={agregar}
@@ -114,7 +114,8 @@ export default function KanbanTareas({
       </div>
 
       {/* Kanban */}
-      <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+      <div className="-mx-4 overflow-x-auto px-4 md:mx-0 md:px-0">
+      <div className="grid min-w-[560px] grid-cols-4 gap-3">
         {ESTADOS_TAREA_KANBAN.map((estado) => {
           const items = tareas.filter((t) => t.estado === estado);
           return (
@@ -221,6 +222,7 @@ export default function KanbanTareas({
             </div>
           );
         })}
+      </div>
       </div>
     </div>
   );

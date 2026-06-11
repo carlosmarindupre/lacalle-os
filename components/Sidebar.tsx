@@ -43,7 +43,13 @@ function NavItem({
   );
 }
 
-export default function Sidebar() {
+export default function Sidebar({
+  isOpen = false,
+  onClose = () => {},
+}: {
+  isOpen?: boolean;
+  onClose?: () => void;
+}) {
   const pathname = usePathname();
   const { clientes, clienteId, setClienteId, cargando } = useClienteActivo();
   const [correo, setCorreo] = useState<string | null>(null);
@@ -73,14 +79,25 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 flex w-[264px] flex-col border-r border-line bg-ink">
-      <div className="border-b border-line px-5 pb-5 pt-6">
+    <aside
+      className={`fixed inset-y-0 left-0 z-40 flex w-[264px] flex-col border-r border-line bg-ink transition-transform duration-200 ease-in-out md:translate-x-0 ${
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      }`}
+    >
+      <div className="relative border-b border-line px-5 pb-5 pt-6">
         <div className="text-lg font-semibold leading-none tracking-tight">
           laCalle<span className="text-turquesa">OS</span>
         </div>
         <div className="mt-2 text-[10px] uppercase tracking-[0.3em] text-mut">
           sistema operacional
         </div>
+        <button
+          onClick={onClose}
+          aria-label="Cerrar menú"
+          className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-md text-lg text-mut transition-colors hover:bg-panel hover:text-snow md:hidden"
+        >
+          ×
+        </button>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-5">
@@ -108,19 +125,24 @@ export default function Sidebar() {
           </NavItem>
         ))}
 
+        <div className="mb-2 mt-6 px-3 text-[10px] uppercase tracking-[0.18em] text-dim">
+          Sistema
+        </div>
+        <NavItem
+          href="/configuracion"
+          active={pathname === "/configuracion"}
+          mark="↓"
+        >
+          Configuración
+        </NavItem>
         {esSuperAdmin && (
-          <>
-            <div className="mb-2 mt-6 px-3 text-[10px] uppercase tracking-[0.18em] text-dim">
-              Sistema
-            </div>
-            <NavItem
-              href="/admin"
-              active={pathname === "/admin"}
-              mark="⚙"
-            >
-              Administración
-            </NavItem>
-          </>
+          <NavItem
+            href="/admin"
+            active={pathname === "/admin"}
+            mark="⚙"
+          >
+            Administración
+          </NavItem>
         )}
       </nav>
 

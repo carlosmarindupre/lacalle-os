@@ -22,7 +22,7 @@ export function PageHeader({
             {kicker}
           </div>
         )}
-        <h1 className="text-3xl font-semibold tracking-tight">{title}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">{title}</h1>
         {desc && <p className="mt-2 max-w-2xl text-sm text-mut">{desc}</p>}
       </div>
       {right}
@@ -232,7 +232,7 @@ export function StatCard({
     <Card className="flex flex-col gap-1">
       <Label>{label}</Label>
       <div
-        className={`font-mono text-3xl font-medium tracking-tight ${
+        className={`font-mono text-2xl font-medium tracking-tight md:text-3xl ${
           accent ? "text-turquesa" : "text-snow"
         }`}
       >

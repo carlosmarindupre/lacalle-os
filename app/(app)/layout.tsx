@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerClient } from "@supabase/ssr";
-import Sidebar from "@/components/Sidebar";
+import AppShell from "@/components/AppShell";
 import Providers from "@/components/Providers";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
@@ -35,10 +35,7 @@ export default async function AppLayout({
 
   return (
     <Providers>
-      <Sidebar />
-      <main className="pl-[264px]">
-        <div className="mx-auto max-w-6xl px-10 py-10">{children}</div>
-      </main>
+      <AppShell>{children}</AppShell>
     </Providers>
   );
 }

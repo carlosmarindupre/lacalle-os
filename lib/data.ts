@@ -45,24 +45,17 @@ export const SERVICIOS: Servicio[] = [
     desc: "Dashboards de datos, reportes periódicos e insights destacados.",
   },
   {
-    slug: "carteleria-digital",
-    nombre: "Cartelería Digital",
-    corto: "Cartelería",
-    num: "06",
-    desc: "Gestión de pantallas, programación de contenidos e instalaciones.",
-  },
-  {
     slug: "desarrollo-web",
     nombre: "Desarrollo Web",
     corto: "Web",
-    num: "07",
-    desc: "Proyectos web activos, backlog, estado de desarrollo y registro de bugs.",
+    num: "06",
+    desc: "Proyectos web activos, fases de desarrollo, stack tecnológico y accesos.",
   },
   {
     slug: "email-marketing",
     nombre: "Email Marketing y Automatizaciones",
     corto: "Email & Autom.",
-    num: "08",
+    num: "07",
     desc: "Flujos activos, campañas enviadas, métricas y estado de automatizaciones.",
   },
 ];
@@ -826,4 +819,399 @@ export type TareaKanban = {
   fecha?: string;
   estado: EstadoTareaKanban;
   archivoUrl?: string; // Link a la pieza (Drive, Figma, etc.) para subir/visualizar
+};
+
+// ---------------------------------------------------------------------------
+// Analítica
+
+export const FUENTES_ANALITICA_DISPONIBLES = [
+  "Google Analytics 4",
+  "Google Search Console",
+  "Google Tag Manager",
+  "Hotjar",
+  "Microsoft Clarity",
+  "Otra",
+] as const;
+export type FuenteAnaliticaPlataforma =
+  (typeof FUENTES_ANALITICA_DISPONIBLES)[number];
+
+export type FuenteAnalitica = {
+  id: string;
+  plataforma: FuenteAnaliticaPlataforma;
+  estado: EstadoConector;
+  propiedad?: string;
+  propiedadNombre?: string;
+  notaError?: string;
+};
+
+export const METRICAS_POR_FUENTE_ANALITICA: Record<
+  FuenteAnaliticaPlataforma,
+  readonly string[]
+> = {
+  "Google Analytics 4": [
+    "Usuarios",
+    "Sesiones",
+    "Vistas de página",
+    "Tasa de rebote",
+    "Duración media de sesión",
+    "Conversiones",
+    "Tasa de conversión",
+    "Ingresos",
+    "Eventos personalizados",
+  ],
+  "Google Search Console": [
+    "Impresiones",
+    "Clics",
+    "CTR",
+    "Posición media",
+    "Consultas",
+    "Páginas",
+    "Países",
+    "Dispositivos",
+  ],
+  "Google Tag Manager": [
+    "Eventos personalizados",
+    "Disparadores activos",
+    "Conversiones configuradas",
+  ],
+  Hotjar: [
+    "Mapas de calor",
+    "Grabaciones de sesión",
+    "Encuestas",
+    "Embudos de conversión",
+  ],
+  "Microsoft Clarity": [
+    "Mapas de calor",
+    "Dead clicks",
+    "Rage clicks",
+    "Grabaciones de sesión",
+    "Scroll depth",
+  ],
+  Otra: [],
+};
+
+export const FUENTES_ANALITICA_INICIAL: FuenteAnalitica[] = [
+  { id: "fuente-ga4", plataforma: "Google Analytics 4", estado: "No configurado" },
+  {
+    id: "fuente-search-console",
+    plataforma: "Google Search Console",
+    estado: "No configurado",
+  },
+  {
+    id: "fuente-gtm",
+    plataforma: "Google Tag Manager",
+    estado: "No configurado",
+  },
+];
+
+export const TIPOS_INFORME_ANALITICA = [
+  "Mensual",
+  "Quincenal",
+  "Trimestral",
+  "Semestral",
+  "Ad hoc",
+] as const;
+export type TipoInformeAnalitica = (typeof TIPOS_INFORME_ANALITICA)[number];
+
+export type InformeAnalitica = {
+  id: string;
+  titulo: string;
+  tipo: TipoInformeAnalitica;
+  periodo: string;
+  fecha: string;
+  url?: string;
+  notas?: string;
+};
+
+export const CATEGORIAS_INSIGHT = [
+  "Tráfico",
+  "Conversiones",
+  "SEO",
+  "Audiencia",
+  "UX",
+  "Otro",
+] as const;
+export type CategoriaInsight = (typeof CATEGORIAS_INSIGHT)[number];
+
+export const IMPACTOS_INSIGHT = ["Alto", "Medio", "Bajo"] as const;
+export type ImpactoInsight = (typeof IMPACTOS_INSIGHT)[number];
+
+export const IMPACTO_INSIGHT_CHIP: Record<ImpactoInsight, string> = {
+  Alto: "text-magenta border-magenta/60",
+  Medio: "text-turquesa border-turquesa/60",
+  Bajo: "text-dim border-line2",
+};
+
+export const CATEGORIA_INSIGHT_COLOR: Record<CategoriaInsight, string> = {
+  Tráfico: "text-turquesa",
+  Conversiones: "text-magenta",
+  SEO: "text-snow",
+  Audiencia: "text-turquesa",
+  UX: "text-mut",
+  Otro: "text-dim",
+};
+
+export type InsightAnalitica = {
+  id: string;
+  fecha: string;
+  categoria: CategoriaInsight;
+  titulo: string;
+  descripcion: string;
+  impacto: ImpactoInsight;
+  accionRecomendada?: string;
+};
+
+// ---------------------------------------------------------------------------
+// Desarrollo Web
+
+export const TIPOS_PROYECTO_WEB = [
+  "Landing page",
+  "Sitio corporativo",
+  "E-commerce",
+  "App web",
+  "Blog / CMS",
+  "Otro",
+] as const;
+export type TipoProyectoWeb = (typeof TIPOS_PROYECTO_WEB)[number];
+
+export const ESTADOS_PROYECTO_WEB = [
+  "Planificado",
+  "En desarrollo",
+  "En staging",
+  "Live",
+  "En mantenimiento",
+  "Pausado",
+  "Archivado",
+] as const;
+export type EstadoProyectoWeb = (typeof ESTADOS_PROYECTO_WEB)[number];
+
+export const ESTADO_PROYECTO_WEB_CHIP: Record<EstadoProyectoWeb, string> = {
+  Planificado: "text-dim border-line2",
+  "En desarrollo": "text-snow border-snow/40",
+  "En staging": "text-magenta border-magenta/60",
+  Live: "text-turquesa border-turquesa/60",
+  "En mantenimiento": "text-turquesa border-turquesa/40",
+  Pausado: "text-dim border-line2",
+  Archivado: "text-dim border-line2",
+};
+
+export type ProyectoWeb = {
+  id: string;
+  nombre: string;
+  tipo: TipoProyectoWeb;
+  estado: EstadoProyectoWeb;
+  descripcion?: string;
+  responsable?: string;
+  fechaInicio?: string;
+  fechaObjetivo?: string;
+  fechaLive?: string;
+};
+
+// Fases de desarrollo
+export const ESTADOS_FASE_WEB = [
+  "Pendiente",
+  "En curso",
+  "Completada",
+  "Bloqueada",
+] as const;
+export type EstadoFaseWeb = (typeof ESTADOS_FASE_WEB)[number];
+
+export const ESTADO_FASE_WEB_CHIP: Record<EstadoFaseWeb, string> = {
+  Pendiente: "text-dim border-line2",
+  "En curso": "text-turquesa border-turquesa/60",
+  Completada: "text-ink bg-turquesa border-turquesa",
+  Bloqueada: "text-magenta border-magenta/60",
+};
+
+export const ESTADO_FASE_WEB_BAR: Record<EstadoFaseWeb, string> = {
+  Pendiente: "bg-line2",
+  "En curso": "bg-turquesa/60",
+  Completada: "bg-turquesa",
+  Bloqueada: "bg-magenta/60",
+};
+
+export type FaseWeb = {
+  id: string;
+  proyectoId: string;
+  nombre: string;
+  estado: EstadoFaseWeb;
+  inicio?: string; // YYYY-MM-DD
+  fin?: string; // YYYY-MM-DD
+  notas?: string;
+};
+
+// Stack tecnológico
+export const CATEGORIAS_STACK_WEB = [
+  "Frontend",
+  "Backend",
+  "Base de datos",
+  "CMS",
+  "Hosting / Infraestructura",
+  "Autenticación",
+  "Pagos",
+  "Analytics",
+  "Otro",
+] as const;
+export type CategoriaStackWeb = (typeof CATEGORIAS_STACK_WEB)[number];
+
+export type TecnologiaStack = {
+  id: string;
+  nombre: string;
+  version?: string;
+  categoria: CategoriaStackWeb;
+  url?: string;
+  notas?: string;
+};
+
+// Accesos a entornos
+export const TIPOS_ACCESO_WEB = [
+  "Producción",
+  "Staging",
+  "Repositorio",
+  "CMS / Admin",
+  "Hosting",
+  "Dominio",
+  "Otro",
+] as const;
+export type TipoAccesoWeb = (typeof TIPOS_ACCESO_WEB)[number];
+
+export type AccesoWeb = {
+  id: string;
+  proyectoId?: string;
+  tipo: TipoAccesoWeb;
+  nombre: string;
+  url: string;
+  notas?: string;
+};
+
+// ── Email Marketing & Automatizaciones ─────────────────────────────────────
+
+export const PLATAFORMAS_EMAIL = [
+  "Mailchimp",
+  "ActiveCampaign",
+  "Klaviyo",
+  "HubSpot",
+  "Brevo",
+  "MailerLite",
+  "ConvertKit",
+  "GetResponse",
+  "Otra",
+] as const;
+export type PlataformaEmail = (typeof PLATAFORMAS_EMAIL)[number];
+
+export type ConfigEmail = {
+  plataforma: PlataformaEmail;
+  cuenta: string;
+  urlPanel: string;
+  urlTemplates?: string;
+  apiKey?: string;
+  notas?: string;
+};
+
+export const TIPOS_CAMPANA_EMAIL = [
+  "Newsletter",
+  "Promocional",
+  "Transaccional",
+  "Bienvenida",
+  "Reactivación",
+  "Estacional",
+  "Otro",
+] as const;
+export type TipoCampanaEmail = (typeof TIPOS_CAMPANA_EMAIL)[number];
+
+export const ESTADOS_CAMPANA_EMAIL = [
+  "Borrador",
+  "Programada",
+  "Enviada",
+  "Pausada",
+  "Archivada",
+] as const;
+export type EstadoCampanaEmail = (typeof ESTADOS_CAMPANA_EMAIL)[number];
+
+export const ESTADO_CAMPANA_EMAIL_CHIP: Record<EstadoCampanaEmail, string> = {
+  Borrador: "border-line2 text-dim",
+  Programada: "border-[#4A90D9]/50 text-[#6aaae8]",
+  Enviada: "border-turquesa/50 text-turquesa",
+  Pausada: "border-magenta/50 text-magenta",
+  Archivada: "border-line2 text-dim",
+};
+
+export type CampanaEmail = {
+  id: string;
+  nombre: string;
+  tipo: TipoCampanaEmail;
+  estado: EstadoCampanaEmail;
+  asunto?: string;
+  audienciaId?: string;
+  fechaEnvio?: string;
+  enviados?: number;
+  aperturas?: number;
+  clics?: number;
+  conversiones?: number;
+  urlCampana?: string;
+  notas?: string;
+};
+
+export const ESTADOS_AUDIENCIA_EMAIL = [
+  "Activa",
+  "En crecimiento",
+  "Estancada",
+  "Archivada",
+] as const;
+export type EstadoAudienciaEmail = (typeof ESTADOS_AUDIENCIA_EMAIL)[number];
+
+export const ESTADO_AUDIENCIA_CHIP: Record<EstadoAudienciaEmail, string> = {
+  Activa: "border-turquesa/50 text-turquesa",
+  "En crecimiento": "border-[#4A90D9]/50 text-[#6aaae8]",
+  Estancada: "border-line2 text-dim",
+  Archivada: "border-line2 text-dim",
+};
+
+export type AudienciaEmail = {
+  id: string;
+  nombre: string;
+  descripcion?: string;
+  estado: EstadoAudienciaEmail;
+  tamanio?: number;
+  tasaBaja?: number;
+  etiquetas?: string;
+  notas?: string;
+};
+
+export const ESTADOS_AUTO_EMAIL = [
+  "Activa",
+  "Pausada",
+  "En desarrollo",
+  "Archivada",
+] as const;
+export type EstadoAutoEmail = (typeof ESTADOS_AUTO_EMAIL)[number];
+
+export const ESTADO_AUTO_CHIP: Record<EstadoAutoEmail, string> = {
+  Activa: "border-turquesa/50 text-turquesa",
+  Pausada: "border-magenta/50 text-magenta",
+  "En desarrollo": "border-[#4A90D9]/50 text-[#6aaae8]",
+  Archivada: "border-line2 text-dim",
+};
+
+export const TRIGGERS_AUTO_EMAIL = [
+  "Suscripción",
+  "Compra",
+  "Abandono de carrito",
+  "Cumpleaños",
+  "Fecha específica",
+  "Comportamiento",
+  "Manual",
+  "Otro",
+] as const;
+export type TriggerAutoEmail = (typeof TRIGGERS_AUTO_EMAIL)[number];
+
+export type AutomatizacionEmail = {
+  id: string;
+  nombre: string;
+  trigger: TriggerAutoEmail;
+  estado: EstadoAutoEmail;
+  pasos?: number;
+  audienciaId?: string;
+  urlFlujo?: string;
+  notas?: string;
 };

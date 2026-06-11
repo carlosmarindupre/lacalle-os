@@ -1,0 +1,185 @@
+<svg viewBox="0 0 820 680" xmlns="http://www.w3.org/2000/svg" role="img" font-family="'SF Mono', 'Fira Code', 'Consolas', monospace" font-size="11">
+  <title>Arquitectura de laCalle OS</title>
+  <desc>Diagrama de 4 capas: Frontend, Lógica de App, Persistencia e Infraestructura</desc>
+
+  <defs>
+    <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3 z" fill="#4a9d8f" opacity="0.7"/>
+    </marker>
+    <marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3 z" fill="#888" opacity="0.5"/>
+    </marker>
+  </defs>
+
+  <rect width="820" height="680" fill="#0e0e0e" rx="10"/>
+
+  <text x="410" y="30" text-anchor="middle" fill="#e8e8e0" font-size="14" font-weight="600" letter-spacing="1" font-family="'Inter','Helvetica Neue',sans-serif">laCalle OS — Arquitectura del Stack</text>
+  <text x="410" y="48" text-anchor="middle" fill="#555" font-size="10" letter-spacing="0.5" font-family="'Inter','Helvetica Neue',sans-serif">Capas · Responsabilidades · Flujo de datos</text>
+
+  <!-- LAYER 1 FRONTEND -->
+  <rect x="20" y="62" width="780" height="120" fill="#141414" rx="8" stroke="#222" stroke-width="1"/>
+  <text x="32" y="80" fill="#4a9d8f" font-size="9" letter-spacing="1.5" font-family="'Inter','Helvetica Neue',sans-serif" font-weight="600">CAPA 1 · FRONTEND</text>
+
+  <rect x="36" y="88" width="140" height="82" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="36" y="88" width="140" height="3" fill="#4a9d8f" rx="3"/>
+  <text x="106" y="109" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">Next.js 16</text>
+  <text x="106" y="124" text-anchor="middle" fill="#777" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">App Router</text>
+  <text x="106" y="139" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">SSR · SSG · Dynamic</text>
+  <text x="106" y="154" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Route Groups</text>
+
+  <rect x="196" y="88" width="130" height="82" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="196" y="88" width="130" height="3" fill="#4a9d8f" rx="3"/>
+  <text x="261" y="109" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">React 19</text>
+  <text x="261" y="124" text-anchor="middle" fill="#777" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">UI + Hooks</text>
+  <text x="261" y="139" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">useState · useEffect</text>
+  <text x="261" y="154" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Server Components</text>
+
+  <rect x="346" y="88" width="130" height="82" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="346" y="88" width="130" height="3" fill="#4a9d8f" rx="3"/>
+  <text x="411" y="109" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">Tailwind CSS 4</text>
+  <text x="411" y="124" text-anchor="middle" fill="#777" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Estilos + Design System</text>
+  <text x="411" y="139" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Responsive md: breakpoints</text>
+  <text x="411" y="154" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">CSS Variables (tokens)</text>
+
+  <rect x="496" y="88" width="130" height="82" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="496" y="88" width="130" height="3" fill="#4a9d8f" rx="3"/>
+  <text x="561" y="109" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">TypeScript</text>
+  <text x="561" y="124" text-anchor="middle" fill="#777" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Tipos + Constantes</text>
+  <text x="561" y="139" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">lib/data.ts (todos los</text>
+  <text x="561" y="154" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">módulos tipados)</text>
+
+  <rect x="646" y="88" width="134" height="82" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="646" y="88" width="134" height="3" fill="#333" rx="3"/>
+  <text x="713" y="109" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">Node.js v22</text>
+  <text x="713" y="124" text-anchor="middle" fill="#777" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Runtime local</text>
+  <text x="713" y="139" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">~/.local/node/</text>
+  <text x="713" y="154" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">npm run dev · build</text>
+
+  <line x1="200" y1="200" x2="200" y2="218" stroke="#4a9d8f" stroke-width="1" marker-end="url(#arr)" opacity="0.5"/>
+  <line x1="410" y1="200" x2="410" y2="218" stroke="#4a9d8f" stroke-width="1" marker-end="url(#arr)" opacity="0.5"/>
+  <line x1="620" y1="200" x2="620" y2="218" stroke="#4a9d8f" stroke-width="1" marker-end="url(#arr)" opacity="0.5"/>
+
+  <!-- LAYER 2 APP CORE -->
+  <rect x="20" y="210" width="780" height="148" fill="#141414" rx="8" stroke="#222" stroke-width="1"/>
+  <text x="32" y="228" fill="#b06eb0" font-size="9" letter-spacing="1.5" font-family="'Inter','Helvetica Neue',sans-serif" font-weight="600">CAPA 2 · LÓGICA DE APP</text>
+
+  <rect x="36" y="236" width="148" height="108" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="36" y="236" width="148" height="3" fill="#b06eb0" rx="3"/>
+  <text x="110" y="257" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">AppShell</text>
+  <text x="110" y="272" text-anchor="middle" fill="#777" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Layout móvil</text>
+  <text x="110" y="287" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Sidebar drawer</text>
+  <text x="110" y="302" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Header hamburguer</text>
+  <text x="110" y="317" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Backdrop overlay</text>
+
+  <rect x="204" y="236" width="178" height="108" fill="#1a1a1a" rx="6" stroke="#4a9d8f" stroke-width="1.5"/>
+  <rect x="204" y="236" width="178" height="3" fill="#4a9d8f" rx="3"/>
+  <text x="293" y="257" text-anchor="middle" fill="#4a9d8f" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">usePersistentState</text>
+  <text x="293" y="272" text-anchor="middle" fill="#777" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Hook central de datos</text>
+  <text x="293" y="287" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Elige backend automático</text>
+  <text x="293" y="302" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Supabase ↔ localStorage</text>
+  <text x="293" y="317" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Debounce + merge</text>
+
+  <rect x="402" y="236" width="148" height="108" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="402" y="236" width="148" height="3" fill="#b06eb0" rx="3"/>
+  <text x="476" y="257" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">KanbanTareas</text>
+  <text x="476" y="272" text-anchor="middle" fill="#777" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Componente compartido</text>
+  <text x="476" y="287" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">8 módulos lo usan</text>
+  <text x="476" y="302" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">storeKey como prop</text>
+  <text x="476" y="317" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">4 columnas · CRUD</text>
+
+  <rect x="570" y="236" width="210" height="108" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="570" y="236" width="210" height="3" fill="#b06eb0" rx="3"/>
+  <text x="675" y="257" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">Librerías compartidas</text>
+  <text x="588" y="274" fill="#4a9d8f" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">lib/data.ts</text>
+  <text x="660" y="274" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">— tipos + constantes</text>
+  <text x="588" y="290" fill="#4a9d8f" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">lib/backup.ts</text>
+  <text x="660" y="290" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">— export/import JSON</text>
+  <text x="588" y="306" fill="#4a9d8f" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">lib/looker.ts</text>
+  <text x="660" y="306" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">— embeds Looker</text>
+  <text x="588" y="322" fill="#4a9d8f" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">lib/cliente-context</text>
+  <text x="674" y="322" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">— cliente activo</text>
+
+  <line x1="293" y1="370" x2="293" y2="392" stroke="#4a9d8f" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="580" y1="370" x2="450" y2="392" stroke="#888" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr2)" opacity="0.5"/>
+
+  <!-- LAYER 3 PERSISTENCIA -->
+  <rect x="20" y="385" width="780" height="148" fill="#141414" rx="8" stroke="#222" stroke-width="1"/>
+  <text x="32" y="403" fill="#d4900f" font-size="9" letter-spacing="1.5" font-family="'Inter','Helvetica Neue',sans-serif" font-weight="600">CAPA 3 · PERSISTENCIA DE DATOS</text>
+
+  <rect x="36" y="412" width="220" height="108" fill="#1a1a1a" rx="6" stroke="#d4900f" stroke-width="1.5"/>
+  <rect x="36" y="412" width="220" height="3" fill="#d4900f" rx="3"/>
+  <text x="146" y="433" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">Supabase · PostgreSQL</text>
+  <text x="146" y="449" text-anchor="middle" fill="#777" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Producción · vxhnogkfavtgczblamua</text>
+  <text x="54" y="466" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· estado_tablero (jsonb por cliente)</text>
+  <text x="54" y="481" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· clientes + asignaciones</text>
+  <text x="54" y="496" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· perfiles (super_admin / miembro)</text>
+  <text x="54" y="511" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· RLS: aislamiento por cliente</text>
+
+  <rect x="276" y="412" width="178" height="108" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="276" y="412" width="178" height="3" fill="#d4900f" rx="3"/>
+  <text x="365" y="433" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">Supabase Auth</text>
+  <text x="365" y="449" text-anchor="middle" fill="#777" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Autenticación</text>
+  <text x="294" y="466" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· Google OAuth 2.0</text>
+  <text x="294" y="481" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· Allowlist por correo</text>
+  <text x="294" y="496" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· JWT + refresh token</text>
+  <text x="294" y="511" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· Callback: /auth/callback</text>
+
+  <rect x="474" y="412" width="178" height="108" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1" stroke-dasharray="6 3"/>
+  <rect x="474" y="412" width="178" height="3" fill="#333" rx="3"/>
+  <text x="563" y="433" text-anchor="middle" fill="#888" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">localStorage</text>
+  <text x="563" y="449" text-anchor="middle" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Fallback dev / offline</text>
+  <text x="492" y="466" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· motor2026:{clienteId}:{key}</text>
+  <text x="492" y="481" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· Sin env vars → activo</text>
+  <text x="492" y="496" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· Sin RLS (local)</text>
+  <text x="492" y="511" fill="#444" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· misma firma del hook</text>
+
+  <rect x="672" y="412" width="108" height="108" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="672" y="412" width="108" height="3" fill="#333" rx="3"/>
+  <text x="726" y="433" text-anchor="middle" fill="#888" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">Looker Studio</text>
+  <text x="726" y="449" text-anchor="middle" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Externo</text>
+  <text x="688" y="466" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· iframes embed</text>
+  <text x="688" y="481" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· /embed/reporting/</text>
+  <text x="688" y="496" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· Paid Media</text>
+  <text x="688" y="511" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">· Analítica</text>
+
+  <line x1="200" y1="545" x2="200" y2="565" stroke="#888" stroke-width="1" marker-end="url(#arr2)" opacity="0.4"/>
+  <line x1="450" y1="545" x2="400" y2="565" stroke="#888" stroke-width="1" marker-end="url(#arr2)" opacity="0.3"/>
+
+  <!-- LAYER 4 INFRA -->
+  <rect x="20" y="558" width="780" height="100" fill="#141414" rx="8" stroke="#222" stroke-width="1"/>
+  <text x="32" y="576" fill="#6aaae8" font-size="9" letter-spacing="1.5" font-family="'Inter','Helvetica Neue',sans-serif" font-weight="600">CAPA 4 · INFRAESTRUCTURA Y DEPLOY</text>
+
+  <rect x="36" y="584" width="195" height="62" fill="#1a1a1a" rx="6" stroke="#6aaae8" stroke-width="1.5"/>
+  <rect x="36" y="584" width="195" height="3" fill="#6aaae8" rx="3"/>
+  <text x="134" y="602" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">Vercel</text>
+  <text x="134" y="618" text-anchor="middle" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Deploy automático desde GitHub</text>
+  <text x="134" y="634" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Env vars · Edge · CI/CD</text>
+
+  <rect x="251" y="584" width="195" height="62" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="251" y="584" width="195" height="3" fill="#444" rx="3"/>
+  <text x="349" y="602" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">GitHub</text>
+  <text x="349" y="618" text-anchor="middle" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Repositorio privado · Source of truth</text>
+  <text x="349" y="634" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Push a main → deploy automático</text>
+
+  <rect x="466" y="584" width="195" height="62" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="466" y="584" width="195" height="3" fill="#444" rx="3"/>
+  <text x="564" y="602" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">Google Cloud</text>
+  <text x="564" y="618" text-anchor="middle" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">OAuth 2.0 credentials</text>
+  <text x="564" y="634" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Redirect URI → Supabase callback</text>
+
+  <rect x="671" y="584" width="109" height="62" fill="#1a1a1a" rx="6" stroke="#333" stroke-width="1"/>
+  <rect x="671" y="584" width="109" height="3" fill="#444" rx="3"/>
+  <text x="726" y="602" text-anchor="middle" fill="#e8e8e0" font-size="11" font-weight="600" font-family="'Inter','Helvetica Neue',sans-serif">Backup JSON</text>
+  <text x="726" y="618" text-anchor="middle" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Export/import manual</text>
+  <text x="726" y="634" text-anchor="middle" fill="#555" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">/configuracion</text>
+
+  <rect x="20" y="666" width="780" height="1" fill="#222"/>
+  <circle cx="36" cy="675" r="4" fill="#4a9d8f"/>
+  <text x="46" y="679" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Componente central</text>
+  <rect x="140" y="671" width="16" height="2" fill="#d4900f" rx="1"/>
+  <text x="162" y="679" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Datos / persistencia</text>
+  <rect x="270" y="671" width="16" height="2" fill="#6aaae8" rx="1"/>
+  <text x="292" y="679" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Infra / deploy</text>
+  <rect x="376" y="671" width="16" height="2" fill="#555" rx="1"/>
+  <text x="398" y="679" fill="#666" font-size="9" font-family="'Inter','Helvetica Neue',sans-serif">Fallback / opcional</text>
+</svg>
