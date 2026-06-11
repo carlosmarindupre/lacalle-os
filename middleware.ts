@@ -1,53 +1,10 @@
-import { createServerClient } from "@supabase/ssr";
+// La protección de rutas se maneja en app/(app)/layout.tsx (Server Component,
+// corre en Node.js donde @supabase/ssr funciona sin restricciones de Edge Runtime).
+// Este archivo existe solo para que Next.js refresque las cookies de sesión.
 import { type NextRequest, NextResponse } from "next/server";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
-const HABILITADO = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
-
-export async function middleware(request: NextRequest) {
-  let respuesta = NextResponse.next({ request });
-
-  if (!HABILITADO) return respuesta;
-
-  const supabase = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll();
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) =>
-          request.cookies.set(name, value)
-        );
-        respuesta = NextResponse.next({ request });
-        cookiesToSet.forEach(({ name, value, options }) =>
-          respuesta.cookies.set(name, value, options)
-        );
-      },
-    },
-  });
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  const user = session?.user ?? null;
-  const path = request.nextUrl.pathname;
-  const esPublica = path.startsWith("/login") || path.startsWith("/auth");
-
-  if (!user && !esPublica) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
-  }
-
-  if (user && path.startsWith("/login")) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
-
-  return respuesta;
+export function middleware(_request: NextRequest) {
+  return NextResponse.next();
 }
 
 export const config = {
