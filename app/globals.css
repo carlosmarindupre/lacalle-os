@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  /* Negros */
+  --color-ink: #0a0a0b;
+  --color-panel: #121214;
+  --color-panel2: #19191c;
+
+  /* Grises */
+  --color-line: #232329;
+  --color-line2: #32323a;
+  --color-snow: #ededf0;
+  --color-mut: #8d8d97;
+  --color-dim: #5d5d67;
+
+  /* Acentos */
+  --color-turquesa: #12d9c5;
+  --color-turq-dim: #0b8d80;
+  --color-magenta: #f02d7d;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-snow);
+}
+
+::selection {
+  background: var(--color-turquesa);
+  color: #0a0a0b;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a31;
+  border-radius: 5px;
+  border: 2px solid #0a0a0b;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+input,
+textarea,
+select,
+button {
+  outline: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.6);
+  cursor: pointer;
 }
