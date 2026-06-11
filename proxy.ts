@@ -3,7 +3,7 @@
 // Este archivo existe solo para que Next.js refresque las cookies de sesión.
 import { type NextRequest, NextResponse } from "next/server";
 
-export function middleware(_request: NextRequest) {
+export function proxy(_request: NextRequest) {
   return NextResponse.next();
 }
 
