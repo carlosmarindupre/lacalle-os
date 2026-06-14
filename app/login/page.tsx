@@ -1,16 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getSupabase } from "@/lib/supabase/client";
 
 export default function LoginPage() {
   const [cargando, setCargando] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
+  const [error, setError] = useState<string | null>(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("error")) setError(params.get("error"));
-  }, []);
+    return params.get("error");
+  });
 
   const entrar = async () => {
     setCargando(true);

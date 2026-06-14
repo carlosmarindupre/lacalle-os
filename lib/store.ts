@@ -99,6 +99,7 @@ export function usePersistentState<T>(
   // Cargar al montar y cada vez que cambia el cliente o la clave.
   useEffect(() => {
     let cancelado = false;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoaded(false);
     // Evita mostrar datos del cliente anterior mientras carga el nuevo.
     setValue(initialRef.current);

@@ -6,7 +6,6 @@ import {
   ESTADOS_PROYECTO_WEB,
   ESTADO_PROYECTO_WEB_CHIP,
   type ProyectoWeb,
-  type TipoProyectoWeb,
   type EstadoProyectoWeb,
 } from "@/lib/data";
 import { usePersistentState, uid } from "@/lib/store";

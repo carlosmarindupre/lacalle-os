@@ -1,15 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  // Cerrar sidebar al cambiar de ruta (navegación móvil)
-  useEffect(() => {
-    setSidebarOpen(false);
-  }, []);
 
   return (
     <>
