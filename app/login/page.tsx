@@ -1,14 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getSupabase } from "@/lib/supabase/client";
 
 export default function LoginPage() {
   const [cargando, setCargando] = useState(false);
-  const [error, setError] = useState<string | null>(() => {
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    return params.get("error");
-  });
+    const errorParam = params.get("error");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (errorParam) setError(errorParam);
+  }, []);
 
   const entrar = async () => {
     setCargando(true);
