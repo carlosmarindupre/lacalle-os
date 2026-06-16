@@ -21,9 +21,16 @@ export default async function AppLayout({
           return cookieStore.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options)
-          );
+          // En un Server Component no se pueden modificar cookies; el refresh
+          // real lo hace middleware.ts. Silenciamos el error siguiendo el
+          // patrón oficial de Supabase para Next 15+.
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            );
+          } catch {
+            // no-op
+          }
         },
       },
     });
