@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { TIPOS_PIEZA, type Pieza } from "@/lib/data";
 import { usePersistentState } from "@/lib/store";
+import { hrefSeguro } from "@/lib/url";
 import { Label, Select, EmptyHint } from "@/components/ui";
 
 const fmtFecha = (f?: string) =>
@@ -87,7 +88,7 @@ export default function Biblioteca() {
               <div className="mt-auto">
                 {p.archivoUrl ? (
                   <a
-                    href={p.archivoUrl}
+                    href={hrefSeguro(p.archivoUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block rounded border border-line px-3 py-1.5 text-xs text-mut transition-colors hover:border-turquesa hover:text-turquesa"

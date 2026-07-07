@@ -12,6 +12,7 @@ import {
   type RecursoMarca,
 } from "@/lib/data";
 import { usePersistentState, uid } from "@/lib/store";
+import { hrefSeguro } from "@/lib/url";
 import {
   Card,
   Label,
@@ -299,7 +300,7 @@ export default function BrandKit() {
                             {r.titulo}
                           </div>
                           <a
-                            href={r.url}
+                            href={hrefSeguro(r.url)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="truncate text-[11px] text-dim underline decoration-line2 transition-colors hover:text-turquesa"
@@ -308,7 +309,7 @@ export default function BrandKit() {
                           </a>
                         </div>
                         <a
-                          href={r.url}
+                          href={hrefSeguro(r.url)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="shrink-0 rounded border border-line px-2 py-1 text-[11px] text-mut transition-colors hover:border-turquesa hover:text-turquesa"

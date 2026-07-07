@@ -11,6 +11,7 @@ import {
   type AudienciaEmail,
 } from "@/lib/data";
 import { usePersistentState, uid } from "@/lib/store";
+import { hrefSeguro } from "@/lib/url";
 import { Card, Label, Select, EmptyHint, StatCard } from "@/components/ui";
 
 function pct(n?: number, total?: number) {
@@ -194,7 +195,7 @@ export default function Campanas() {
                   <div className="flex shrink-0 items-center gap-2">
                     {c.urlCampana && (
                       <a
-                        href={c.urlCampana}
+                        href={hrefSeguro(c.urlCampana)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[10px] text-dim hover:text-turquesa"

@@ -48,6 +48,29 @@ export function parseLookerUrl(input: string): LookerParse {
 export const urlAbrirLooker = (embedUrl: string): string =>
   embedUrl.replace("/embed/reporting/", "/reporting/");
 
+// Valida en el punto de render que una URL guardada es realmente un embed de
+// Looker antes de cargarla en un iframe. El formulario de alta usa
+// parseLookerUrl, pero los valores importados desde un backup nunca pasan por
+// esa validación: un backup manipulado podría inyectar un origen arbitrario en
+// el iframe (con sandbox allow-scripts). Este guard cierra ese hueco.
+export function esUrlLookerEmbed(url: string | undefined | null): boolean {
+  if (!url) return false;
+  let u: URL;
+  try {
+    u = new URL(url);
+  } catch {
+    return false;
+  }
+  if (u.protocol.toLowerCase() !== "https:") return false;
+  const host = u.hostname.toLowerCase();
+  const esLooker =
+    host === "lookerstudio.google.com" ||
+    host === "datastudio.google.com" ||
+    host.endsWith(".lookerstudio.google.com") ||
+    host.endsWith(".datastudio.google.com");
+  return esLooker && u.pathname.includes("/embed/reporting/");
+}
+
 export const LOOKER_ALTURAS = ["Compacto", "Estándar", "Alto"] as const;
 
 export const alturaDeLabel = (l: string): number =>

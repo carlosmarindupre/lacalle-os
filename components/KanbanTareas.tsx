@@ -7,6 +7,7 @@ import {
   type TareaKanban,
 } from "@/lib/data";
 import { usePersistentState, uid } from "@/lib/store";
+import { hrefSeguro } from "@/lib/url";
 import { Select } from "@/components/ui";
 
 const COL_ACCENT: Record<EstadoTareaKanban, string> = {
@@ -33,6 +34,15 @@ export default function KanbanTareas({
   const [dragId, setDragId] = useState<string | null>(null);
   const [overCol, setOverCol] = useState<EstadoTareaKanban | null>(null);
 
+  const [editandoId, setEditandoId] = useState<string | null>(null);
+  const [draft, setDraft] = useState({
+    titulo: "",
+    asignado: "",
+    fecha: "",
+    archivoUrl: "",
+    estado: "No iniciado" as EstadoTareaKanban,
+  });
+
   const agregar = () => {
     const t = titulo.trim();
     if (!t) return;
@@ -58,6 +68,30 @@ export default function KanbanTareas({
 
   const eliminar = (id: string) =>
     setTareas(tareas.filter((t) => t.id !== id));
+
+  const empezarEdicion = (t: TareaKanban) => {
+    setEditandoId(t.id);
+    setDraft({
+      titulo: t.titulo,
+      asignado: t.asignado ?? "",
+      fecha: t.fecha ?? "",
+      archivoUrl: t.archivoUrl ?? "",
+      estado: t.estado,
+    });
+  };
+
+  const guardarEdicion = () => {
+    const tit = draft.titulo.trim();
+    if (!editandoId || !tit) return;
+    actualizar(editandoId, {
+      titulo: tit,
+      asignado: draft.asignado.trim() || undefined,
+      fecha: draft.fecha || undefined,
+      archivoUrl: draft.archivoUrl.trim() || undefined,
+      estado: draft.estado,
+    });
+    setEditandoId(null);
+  };
 
   const empezarDrag = (e: React.DragEvent, id: string) => {
     e.dataTransfer.setData("text/plain", id);
@@ -145,18 +179,100 @@ export default function KanbanTareas({
                 {items.map((t) => (
                   <div
                     key={t.id}
-                    draggable
+                    draggable={editandoId !== t.id}
                     onDragStart={(e) => empezarDrag(e, t.id)}
                     onDragEnd={() => {
                       setDragId(null);
                       setOverCol(null);
                     }}
-                    className={`group cursor-grab rounded-md border border-line bg-panel2 p-2.5 transition-colors hover:border-line2 active:cursor-grabbing ${
-                      dragId === t.id ? "opacity-40" : ""
-                    }`}
+                    className={`group rounded-md border border-line bg-panel2 p-2.5 transition-colors hover:border-line2 ${
+                      editandoId === t.id
+                        ? "border-turquesa/60"
+                        : "cursor-grab active:cursor-grabbing"
+                    } ${dragId === t.id ? "opacity-40" : ""}`}
                   >
+                    {editandoId === t.id ? (
+                      <div
+                        className="space-y-1.5"
+                        onKeyDown={(e) => {
+                          if (e.key === "Escape") setEditandoId(null);
+                        }}
+                      >
+                        <input
+                          value={draft.titulo}
+                          onChange={(e) =>
+                            setDraft({ ...draft, titulo: e.target.value })
+                          }
+                          onKeyDown={(e) => e.key === "Enter" && guardarEdicion()}
+                          autoFocus
+                          placeholder="Título"
+                          className="w-full rounded-md border border-line bg-panel px-2 py-1.5 text-xs placeholder:text-dim transition-colors focus:border-turquesa"
+                        />
+                        <input
+                          value={draft.asignado}
+                          onChange={(e) =>
+                            setDraft({ ...draft, asignado: e.target.value })
+                          }
+                          onKeyDown={(e) => e.key === "Enter" && guardarEdicion()}
+                          placeholder="Asignado"
+                          className="w-full rounded-md border border-line bg-panel px-2 py-1.5 text-xs placeholder:text-dim transition-colors focus:border-turquesa"
+                        />
+                        <input
+                          type="date"
+                          value={draft.fecha}
+                          onChange={(e) =>
+                            setDraft({ ...draft, fecha: e.target.value })
+                          }
+                          className="w-full rounded-md border border-line bg-panel px-2 py-1.5 text-xs text-snow transition-colors focus:border-turquesa"
+                        />
+                        <input
+                          value={draft.archivoUrl}
+                          onChange={(e) =>
+                            setDraft({ ...draft, archivoUrl: e.target.value })
+                          }
+                          onKeyDown={(e) => e.key === "Enter" && guardarEdicion()}
+                          placeholder="Link de la pieza…"
+                          className="w-full rounded-md border border-line bg-panel px-2 py-1.5 text-xs placeholder:text-dim transition-colors focus:border-turquesa"
+                        />
+                        <Select
+                          value={draft.estado}
+                          onChange={(v) =>
+                            setDraft({
+                              ...draft,
+                              estado: v as EstadoTareaKanban,
+                            })
+                          }
+                          options={ESTADOS_TAREA_KANBAN}
+                          className="w-full"
+                        />
+                        <div className="space-y-1.5 pt-0.5">
+                          <button
+                            onClick={guardarEdicion}
+                            disabled={!draft.titulo.trim()}
+                            className="w-full rounded-md bg-turquesa px-2 py-1.5 text-[11px] font-medium text-ink transition-opacity hover:opacity-85 disabled:opacity-40"
+                          >
+                            Guardar
+                          </button>
+                          <button
+                            onClick={() => setEditandoId(null)}
+                            className="w-full rounded-md border border-line px-2 py-1.5 text-[11px] text-mut transition-colors hover:border-line2 hover:text-snow"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
                     <div className="mb-1.5 flex items-start justify-between gap-2">
                       <span className="text-xs leading-snug">{t.titulo}</span>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => empezarEdicion(t)}
+                          className="text-dim opacity-0 transition-opacity hover:text-turquesa group-hover:opacity-100"
+                          aria-label="Editar"
+                        >
+                          ✎
+                        </button>
                       <button
                         onClick={() => eliminar(t.id)}
                         className="text-dim opacity-0 transition-opacity hover:text-magenta group-hover:opacity-100"
@@ -164,6 +280,7 @@ export default function KanbanTareas({
                       >
                         ×
                       </button>
+                      </div>
                     </div>
                     <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-dim">
                       {t.asignado && (
@@ -178,7 +295,7 @@ export default function KanbanTareas({
                       )}
                       {t.archivoUrl && (
                         <a
-                          href={t.archivoUrl}
+                          href={hrefSeguro(t.archivoUrl)}
                           target="_blank"
                           rel="noopener noreferrer"
                           draggable={false}
@@ -190,7 +307,7 @@ export default function KanbanTareas({
                         </a>
                       )}
                     </div>
-                    <div className="mt-2 space-y-1.5 opacity-0 transition-opacity group-hover:opacity-100">
+                    <div className="mt-2 opacity-0 transition-opacity group-hover:opacity-100">
                       <Select
                         value={t.estado}
                         onChange={(v) =>
@@ -199,18 +316,9 @@ export default function KanbanTareas({
                         options={ESTADOS_TAREA_KANBAN}
                         className="w-full"
                       />
-                      <input
-                        value={t.archivoUrl ?? ""}
-                        onChange={(e) =>
-                          actualizar(t.id, {
-                            archivoUrl: e.target.value.trim() || undefined,
-                          })
-                        }
-                        onMouseDown={(e) => e.stopPropagation()}
-                        placeholder="Link de la pieza…"
-                        className="w-full rounded-md border border-line bg-panel px-2 py-1.5 text-[11px] placeholder:text-dim transition-colors focus:border-turquesa"
-                      />
                     </div>
+                      </>
+                    )}
                   </div>
                 ))}
                 {items.length === 0 && (

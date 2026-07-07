@@ -8,6 +8,7 @@ import {
   type ProyectoWeb,
 } from "@/lib/data";
 import { usePersistentState, uid } from "@/lib/store";
+import { hrefSeguro } from "@/lib/url";
 import { Card, Label, Select, EmptyHint, StatCard } from "@/components/ui";
 
 const TIPO_ICON: Record<TipoAccesoWeb, string> = {
@@ -197,7 +198,7 @@ export default function Accesos() {
                   </div>
                 </div>
                 <a
-                  href={a.url}
+                  href={hrefSeguro(a.url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="truncate rounded bg-panel2 px-2.5 py-1.5 font-mono text-[10px] text-dim transition-colors hover:text-turquesa"

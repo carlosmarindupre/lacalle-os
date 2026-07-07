@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { PLATAFORMAS_EMAIL, type ConfigEmail, type PlataformaEmail } from "@/lib/data";
 import { usePersistentState } from "@/lib/store";
+import { hrefSeguro } from "@/lib/url";
 import { Card, Label, Select, EmptyHint } from "@/components/ui";
 
 const PLATAFORMA_COLOR: Record<PlataformaEmail, string> = {
@@ -167,7 +168,7 @@ export default function Plataforma() {
           <div className="flex flex-col gap-1.5">
             {config!.urlPanel && (
               <a
-                href={config!.urlPanel}
+                href={hrefSeguro(config!.urlPanel)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 text-xs text-dim transition-colors hover:text-turquesa"
@@ -179,7 +180,7 @@ export default function Plataforma() {
             )}
             {config!.urlTemplates && (
               <a
-                href={config!.urlTemplates}
+                href={hrefSeguro(config!.urlTemplates)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 text-xs text-dim transition-colors hover:text-turquesa"

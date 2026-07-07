@@ -10,10 +10,11 @@ import {
   type CategoriaInsight,
   type ImpactoInsight,
 } from "@/lib/data";
-import { usePersistentState, uid } from "@/lib/store";
+import { usePersistentState, uid, hoyISO } from "@/lib/store";
 import { Card, Label, Select, EmptyHint, StatCard } from "@/components/ui";
 
-const hoy = () => new Date().toISOString().split("T")[0];
+// Fecha local (Chile); ver nota en lib/store.hoyISO (toISOString es UTC).
+const hoy = hoyISO;
 
 type FiltroCategoria = CategoriaInsight | "Todas";
 type FiltroImpacto = ImpactoInsight | "Todos";

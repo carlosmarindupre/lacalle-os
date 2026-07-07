@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { type Servicio } from "@/lib/data";
 import { usePersistentState, uid, hoyISO } from "@/lib/store";
+import { hrefSeguro } from "@/lib/url";
 import {
   PageHeader,
   Card,
@@ -223,7 +224,7 @@ export default function GenericModule({ servicio }: { servicio: Servicio }) {
                   <span className="h-1.5 w-1.5 shrink-0 bg-turquesa" />
                   {e.url ? (
                     <a
-                      href={e.url}
+                      href={hrefSeguro(e.url)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex-1 truncate text-sm transition-colors hover:text-turquesa"

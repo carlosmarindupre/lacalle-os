@@ -12,7 +12,7 @@ import {
   type ObjetivoCampana,
   type PlataformaAds,
 } from "@/lib/data";
-import { usePersistentState, uid } from "@/lib/store";
+import { usePersistentState, uid, hoyISO } from "@/lib/store";
 import {
   Card,
   Label,
@@ -23,8 +23,6 @@ import {
   StatCard,
 } from "@/components/ui";
 import BrandKitPanel from "@/components/diseno/BrandKitPanel";
-
-const hoyISO = () => new Date().toISOString().slice(0, 10);
 
 const inferirObjetivo = (kpi: string): ObjetivoCampana => {
   const k = kpi.toLowerCase();

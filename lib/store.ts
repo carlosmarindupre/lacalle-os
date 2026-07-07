@@ -24,11 +24,20 @@ function esObjetoPlano(v: unknown): v is Record<string, unknown> {
   return v !== null && typeof v === "object" && !Array.isArray(v);
 }
 
-// Si el esquema creció (nuevos campos en initial), lo guardado se fusiona sobre
-// los defaults para no perder claves nuevas.
+// Fusiona lo guardado sobre los defaults. Si el esquema creció (nuevos campos
+// en initial), no se pierden claves nuevas. Además valida que la "forma" del
+// valor guardado coincida con la del default: un backup corrupto o manipulado
+// que deje, p. ej., un string donde se espera un array haría crashear el módulo
+// al renderizar (`valor.map is not a function`), así que en ese caso se
+// descarta el valor guardado y se usa el default.
 function fusionar<T>(initial: T, guardado: unknown): T {
-  if (esObjetoPlano(guardado) && esObjetoPlano(initial)) {
-    return { ...(initial as object), ...(guardado as object) } as T;
+  if (Array.isArray(initial)) {
+    return (Array.isArray(guardado) ? guardado : initial) as T;
+  }
+  if (esObjetoPlano(initial)) {
+    return esObjetoPlano(guardado)
+      ? ({ ...(initial as object), ...(guardado as object) } as T)
+      : initial;
   }
   return guardado as T;
 }

@@ -11,6 +11,7 @@ import {
   type AudienciaEmail,
 } from "@/lib/data";
 import { usePersistentState, uid } from "@/lib/store";
+import { hrefSeguro } from "@/lib/url";
 import { Card, Label, Select, EmptyHint, StatCard } from "@/components/ui";
 
 const TRIGGER_ICON: Record<TriggerAutoEmail, string> = {
@@ -159,7 +160,7 @@ export default function Automatizaciones() {
                   <div className="flex shrink-0 items-center gap-1.5">
                     {a.urlFlujo && (
                       <a
-                        href={a.urlFlujo}
+                        href={hrefSeguro(a.urlFlujo)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[10px] text-dim hover:text-turquesa"

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { type Documento } from "@/lib/data";
 import { usePersistentState, uid, hoyISO } from "@/lib/store";
+import { hrefSeguro } from "@/lib/url";
 import { Card, Label, EmptyHint } from "@/components/ui";
 
 export default function Documentos() {
@@ -69,7 +70,7 @@ export default function Documentos() {
               <span className="h-1.5 w-1.5 shrink-0 bg-turquesa" />
               {doc.url ? (
                 <a
-                  href={doc.url}
+                  href={hrefSeguro(doc.url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 truncate text-sm transition-colors hover:text-turquesa"

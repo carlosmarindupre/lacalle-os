@@ -7,8 +7,25 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_HABILITADO } from "./config";
 export async function updateSession(request: NextRequest) {
   let respuesta = NextResponse.next({ request });
 
-  // Sin Supabase configurado no hay auth: la app corre en modo local.
-  if (!SUPABASE_HABILITADO) return respuesta;
+  // Sin Supabase configurado no hay auth.
+  //   · Desarrollo: la app corre en modo local (localStorage), sin login.
+  //   · Producción: la ausencia de credenciales es una mala configuración
+  //     (p. ej. env vars que no propagaron en el deploy). Servir el tablero
+  //     sin autenticación sería un fail-open, así que se cierra el acceso a
+  //     las rutas privadas devolviendo 503 en vez de exponerlas.
+  if (!SUPABASE_HABILITADO) {
+    if (process.env.NODE_ENV === "production") {
+      const path = request.nextUrl.pathname;
+      const esPublica = path.startsWith("/login") || path.startsWith("/auth");
+      if (!esPublica) {
+        return new NextResponse(
+          "Servicio no disponible: autenticación no configurada.",
+          { status: 503 }
+        );
+      }
+    }
+    return respuesta;
+  }
 
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     cookies: {
@@ -34,19 +51,23 @@ export async function updateSession(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const esPublica = path.startsWith("/login") || path.startsWith("/auth");
 
-  // Sin sesión y en ruta privada → al login.
-  if (!user && !esPublica) {
+  // Redirige preservando las cookies de sesión ya refrescadas en `respuesta`.
+  // Si getUser() rotó el token, esas cookies viven en `respuesta`; un
+  // NextResponse.redirect nuevo no las lleva, causando refresh loops / logout
+  // intermitente. El patrón oficial de Supabase copia las cookies al redirect.
+  const redirigir = (pathname: string) => {
     const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
-  }
+    url.pathname = pathname;
+    const redir = NextResponse.redirect(url);
+    respuesta.cookies.getAll().forEach((c) => redir.cookies.set(c));
+    return redir;
+  };
+
+  // Sin sesión y en ruta privada → al login.
+  if (!user && !esPublica) return redirigir("/login");
 
   // Con sesión y entrando a /login → al inicio.
-  if (user && path.startsWith("/login")) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
+  if (user && path.startsWith("/login")) return redirigir("/");
 
   return respuesta;
 }

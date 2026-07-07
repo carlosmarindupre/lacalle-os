@@ -9,10 +9,12 @@ import {
   type ProyectoWeb,
   type EstadoFaseWeb,
 } from "@/lib/data";
-import { usePersistentState, uid } from "@/lib/store";
+import { usePersistentState, uid, hoyISO } from "@/lib/store";
 import { Card, Label, Select, EmptyHint, StatCard } from "@/components/ui";
 
-const hoy = () => new Date().toISOString().split("T")[0];
+// Fecha local (Chile). new Date().toISOString() es UTC y adelanta un día por
+// las noches; hoyISO usa la fecha local. Ver lib/store.
+const hoy = hoyISO;
 
 // Devuelve el rango total en días y el offset/ancho de cada fase dentro de él.
 function calcTimeline(fases: FaseWeb[]) {

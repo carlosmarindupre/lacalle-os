@@ -15,6 +15,8 @@ import {
   type PlataformaAds,
 } from "@/lib/data";
 import { usePersistentState, uid } from "@/lib/store";
+import { esUrlLookerEmbed } from "@/lib/looker";
+import { hrefSeguro } from "@/lib/url";
 import { Card, Label, Select, EmptyHint, StatCard, TextInput } from "@/components/ui";
 
 // Mapeo conector → nombre de plataforma en Estrategia.
@@ -265,7 +267,7 @@ export default function Conectores() {
                       options={ALTURAS}
                     />
                     <a
-                      href={urlAbrir(d.url)}
+                      href={hrefSeguro(urlAbrir(d.url))}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="rounded-md border border-line px-2.5 py-1 text-[10px] uppercase tracking-wider text-mut transition-colors hover:border-turquesa hover:text-turquesa"
@@ -281,14 +283,20 @@ export default function Conectores() {
                     </button>
                   </div>
                 </div>
-                <iframe
-                  src={d.url}
-                  title={d.titulo}
-                  className="w-full border-0 bg-panel2"
-                  style={{ height: d.altura ?? 640 }}
-                  allowFullScreen
-                  sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
-                />
+                {esUrlLookerEmbed(d.url) ? (
+                  <iframe
+                    src={d.url}
+                    title={d.titulo}
+                    className="w-full border-0 bg-panel2"
+                    style={{ height: d.altura ?? 640 }}
+                    allowFullScreen
+                    sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
+                  />
+                ) : (
+                  <div className="px-4 py-8 text-center text-xs text-magenta">
+                    Enlace de Looker inválido — vuelve a incrustar el dashboard.
+                  </div>
+                )}
               </Card>
             ))}
           </div>

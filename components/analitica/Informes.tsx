@@ -6,10 +6,12 @@ import {
   type InformeAnalitica,
   type TipoInformeAnalitica,
 } from "@/lib/data";
-import { usePersistentState, uid } from "@/lib/store";
+import { usePersistentState, uid, hoyISO } from "@/lib/store";
+import { hrefSeguro } from "@/lib/url";
 import { Card, Label, Select, EmptyHint, StatCard } from "@/components/ui";
 
-const hoy = () => new Date().toISOString().split("T")[0];
+// Fecha local (Chile); ver nota en lib/store.hoyISO (toISOString es UTC).
+const hoy = hoyISO;
 
 export default function Informes() {
   const [informes, setInformes] = usePersistentState<InformeAnalitica[]>(
@@ -102,7 +104,7 @@ export default function Informes() {
               <div className="flex shrink-0 items-center gap-2">
                 {inf.url && (
                   <a
-                    href={inf.url}
+                    href={hrefSeguro(inf.url)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="rounded-md border border-line px-2.5 py-1.5 text-[11px] text-mut transition-colors hover:border-turquesa hover:text-turquesa"

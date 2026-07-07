@@ -103,6 +103,21 @@ export type BackupPayload = {
   datos: Record<string, unknown>;
 };
 
+// Un backup importado es entrada no confiable (puede venir de un archivo
+// manipulado). Solo se aceptan las claves conocidas del tablero; cualquier otra
+// se descarta para no inyectar estado arbitrario en `estado_tablero`.
+const CLAVES_VALIDAS = new Set<string>(
+  MODULOS_BACKUP.flatMap((m) => m.keys)
+);
+
+function clavePermitida(clave: string): boolean {
+  return (
+    CLAVES_VALIDAS.has(clave) ||
+    clave === "servicios:estado" ||
+    clave.startsWith("mod:")
+  );
+}
+
 export async function exportarBackup(
   clienteId: string
 ): Promise<BackupPayload> {
@@ -150,9 +165,13 @@ export async function importarBackup(
 ): Promise<void> {
   const { datos } = payload;
 
+  const entradas = Object.entries(datos).filter(([clave]) =>
+    clavePermitida(clave)
+  );
+
   if (SUPABASE_HABILITADO) {
     const sb = getSupabase();
-    const rows = Object.entries(datos).map(([clave, valor]) => ({
+    const rows = entradas.map(([clave, valor]) => ({
       cliente_id: clienteId,
       clave,
       valor: valor as unknown,
@@ -165,7 +184,7 @@ export async function importarBackup(
     }
   } else {
     const prefijo = `${PREFIJO}:${clienteId}:`;
-    for (const [clave, valor] of Object.entries(datos)) {
+    for (const [clave, valor] of entradas) {
       try {
         localStorage.setItem(`${prefijo}${clave}`, JSON.stringify(valor));
       } catch {

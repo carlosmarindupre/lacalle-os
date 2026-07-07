@@ -7,6 +7,7 @@ import {
   type CategoriaStackWeb,
 } from "@/lib/data";
 import { usePersistentState, uid } from "@/lib/store";
+import { hrefSeguro } from "@/lib/url";
 import { Card, Label, Select, EmptyHint, StatCard } from "@/components/ui";
 
 const CATEGORIA_COLOR: Record<CategoriaStackWeb, string> = {
@@ -172,7 +173,7 @@ export default function Stack() {
                       </div>
                       {t.url && (
                         <a
-                          href={t.url}
+                          href={hrefSeguro(t.url)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-[10px] text-dim transition-colors hover:text-turquesa"
