@@ -9,16 +9,16 @@ export default async function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // El caso "producción sin Supabase" (mala configuración → fail-closed) lo
+  // maneja el proxy (session.ts), que devuelve 503 en rutas privadas antes de
+  // que este layout se renderice. Aquí solo se exige sesión cuando Supabase
+  // está habilitado; en desarrollo sin Supabase la app corre en modo local.
   if (SUPABASE_HABILITADO) {
     const supabase = await getServerSupabase();
     const {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) redirect("/login");
-  } else if (process.env.NODE_ENV === "production") {
-    // Producción sin Supabase = mala configuración: no renderizar el tablero
-    // sin autenticación (defensa en profundidad; el proxy ya devuelve 503).
-    throw new Error("Supabase no está configurado en producción.");
   }
 
   return (
