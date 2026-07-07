@@ -82,6 +82,18 @@ export async function cambiarRol(perfilId: string, rol: RolUsuario) {
   if (error) throw error;
 }
 
+// Revoca el acceso de un usuario existente: borra su perfil y, en cascada, sus
+// asignaciones de cliente (acceso_cliente). Aunque su sesión siga viva hasta
+// expirar, sin perfil las políticas RLS le niegan todo dato y el gate de /admin
+// lo expulsa. NO borra su cuenta de auth (eso requiere service-role desde el
+// dashboard de Supabase); para impedir que vuelva a registrarse hay que quitar
+// además su correo de la lista blanca con quitarCorreo().
+export async function revocarAcceso(perfilId: string) {
+  const sb = getSupabase();
+  const { error } = await sb.from("perfiles").delete().eq("id", perfilId);
+  if (error) throw error;
+}
+
 // --- Clientes ---
 export async function crearCliente(nombre: string) {
   const sb = getSupabase();

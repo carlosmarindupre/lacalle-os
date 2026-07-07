@@ -6,6 +6,7 @@ import {
   invitarCorreo,
   quitarCorreo,
   cambiarRol,
+  revocarAcceso,
   crearCliente,
   renombrarCliente,
   archivarCliente,
@@ -213,6 +214,22 @@ function SeccionUsuarios({
     }
   };
 
+  const revocar = async (id: string, quien: string) => {
+    if (
+      !confirm(
+        `¿Revocar el acceso de "${quien}"? Se borrará su perfil y sus asignaciones de cliente, y dejará de ver datos. ` +
+          "Para impedir que vuelva a registrarse, quita también su correo de la lista de correos autorizados."
+      )
+    )
+      return;
+    try {
+      await revocarAcceso(id);
+      onRefrescar();
+    } catch {
+      alert("No se pudo revocar el acceso.");
+    }
+  };
+
   if (datos.perfiles.length === 0) {
     return (
       <section className="rounded-xl border border-line bg-panel p-5">
@@ -262,14 +279,23 @@ function SeccionUsuarios({
                 <div className="flex shrink-0 items-center gap-2">
                   <Badge rol={p.rol} />
                   {p.id !== miId && (
-                    <button
-                      onClick={() =>
-                        cambiar(p.id, esMiembro ? "super_admin" : "miembro")
-                      }
-                      className="text-[11px] text-dim transition-colors hover:text-turquesa"
-                    >
-                      {esMiembro ? "→ Admin" : "→ Miembro"}
-                    </button>
+                    <>
+                      <button
+                        onClick={() =>
+                          cambiar(p.id, esMiembro ? "super_admin" : "miembro")
+                        }
+                        className="text-[11px] text-dim transition-colors hover:text-turquesa"
+                      >
+                        {esMiembro ? "→ Admin" : "→ Miembro"}
+                      </button>
+                      <button
+                        onClick={() => revocar(p.id, p.nombre ?? p.correo)}
+                        className="text-[11px] text-dim transition-colors hover:text-magenta"
+                        title="Borrar perfil y accesos de este usuario"
+                      >
+                        Revocar
+                      </button>
+                    </>
                   )}
                 </div>
               </div>
