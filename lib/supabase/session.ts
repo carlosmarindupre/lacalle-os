@@ -2,6 +2,12 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_HABILITADO } from "./config";
 
+// Rutas públicas (no requieren sesión). Allowlist estricta: con prefijos sueltos
+// (startsWith("/auth")) una ruta futura como /authors o /login-demo quedaría
+// pública por accidente. Solo /login y lo que cuelga de /auth/ (el callback).
+const esRutaPublica = (path: string): boolean =>
+  path === "/login" || path.startsWith("/auth/");
+
 // Refresca la sesión en cada request y protege las rutas: si no hay usuario
 // autenticado, redirige a /login (salvo las rutas públicas de auth).
 export async function updateSession(request: NextRequest) {
@@ -16,8 +22,7 @@ export async function updateSession(request: NextRequest) {
   if (!SUPABASE_HABILITADO) {
     if (process.env.NODE_ENV === "production") {
       const path = request.nextUrl.pathname;
-      const esPublica = path.startsWith("/login") || path.startsWith("/auth");
-      if (!esPublica) {
+      if (!esRutaPublica(path)) {
         return new NextResponse(
           "Servicio no disponible: autenticación no configurada.",
           { status: 503 }
@@ -49,7 +54,7 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
-  const esPublica = path.startsWith("/login") || path.startsWith("/auth");
+  const esPublica = esRutaPublica(path);
 
   // Redirige preservando las cookies de sesión ya refrescadas en `respuesta`.
   // Si getUser() rotó el token, esas cookies viven en `respuesta`; un
@@ -67,7 +72,7 @@ export async function updateSession(request: NextRequest) {
   if (!user && !esPublica) return redirigir("/login");
 
   // Con sesión y entrando a /login → al inicio.
-  if (user && path.startsWith("/login")) return redirigir("/");
+  if (user && path === "/login") return redirigir("/");
 
   return respuesta;
 }

@@ -50,7 +50,9 @@ export default function LoginPage() {
             <div className="mt-4 rounded-md border border-magenta/40 bg-magenta/10 px-3 py-2 text-xs text-magenta">
               {error === "no_autorizado"
                 ? "Tu correo no está autorizado para acceder. Contacta al administrador."
-                : "No se pudo iniciar sesión. Inténtalo de nuevo."}
+                : error === "acceso"
+                  ? "No pudimos iniciar tu sesión. Puede que tu correo no esté autorizado; si crees que es un error, contacta al administrador."
+                  : "No se pudo iniciar sesión. Inténtalo de nuevo."}
             </div>
           )}
 

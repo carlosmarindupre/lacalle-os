@@ -54,7 +54,12 @@ export default function Plataforma() {
     setEditando(false);
   };
 
-  if (!config && !editando) {
+  // Se considera "sin configurar" tanto null como un objeto incompleto (p. ej.
+  // un backup manipulado sin `plataforma`): así el render principal, que usa
+  // config!.plataforma como clave de PLATAFORMA_COLOR, nunca recibe undefined.
+  const configCompleta = !!config && config.plataforma in PLATAFORMA_COLOR;
+
+  if (!configCompleta && !editando) {
     return (
       <div className="space-y-6">
         <EmptyHint>

@@ -11,8 +11,11 @@ export async function GET(request: Request) {
   const code = searchParams.get("code");
   const error = searchParams.get("error");
 
+  // Error del proveedor OAuth (p. ej. el usuario canceló, access_denied). No es
+  // un problema de autorización de correo: se trata como fallo genérico de
+  // sesión. No se refleja el valor crudo de `error` en la redirección.
   if (error) {
-    return NextResponse.redirect(`${origin}/login?error=no_autorizado`);
+    return NextResponse.redirect(`${origin}/login?error=sesion`);
   }
 
   if (code) {
@@ -33,7 +36,12 @@ export async function GET(request: Request) {
     if (!exErr) {
       return NextResponse.redirect(`${origin}/`);
     }
-    return NextResponse.redirect(`${origin}/login?error=no_autorizado`);
+    // El canje puede fallar porque el correo no está en la lista blanca (el
+    // trigger de la base aborta el alta) o por causas transitorias (código
+    // expirado, red). Supabase no permite distinguirlas de forma fiable desde
+    // el mensaje, así que se usa un motivo honesto que cubre ambas en lugar de
+    // afirmar "correo no autorizado" a alguien que sí lo está.
+    return NextResponse.redirect(`${origin}/login?error=acceso`);
   }
 
   return NextResponse.redirect(`${origin}/login`);
