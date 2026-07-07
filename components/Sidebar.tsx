@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SERVICIOS } from "@/lib/data";
 import { useClienteActivo } from "@/lib/cliente-context";
+import { useSesion } from "@/lib/sesion-context";
 import { SUPABASE_HABILITADO } from "@/lib/supabase/config";
 import { getSupabase } from "@/lib/supabase/client";
 
@@ -52,26 +52,7 @@ export default function Sidebar({
 }) {
   const pathname = usePathname();
   const { clientes, clienteId, setClienteId, cargando } = useClienteActivo();
-  const [correo, setCorreo] = useState<string | null>(null);
-  const [esSuperAdmin, setEsSuperAdmin] = useState(false);
-
-  useEffect(() => {
-    if (!SUPABASE_HABILITADO) return;
-    (async () => {
-      const sb = getSupabase();
-      const res = await sb.auth.getUser();
-      setCorreo(res.data.user?.email ?? null);
-      // Consulta el rol del perfil para mostrar/ocultar el link de Admin
-      if (res.data.user) {
-        const { data } = await sb
-          .from("perfiles")
-          .select("rol")
-          .eq("id", res.data.user.id)
-          .single();
-        setEsSuperAdmin(data?.rol === "super_admin");
-      }
-    })();
-  }, []);
+  const { correo, esSuperAdmin } = useSesion();
 
   const salir = async () => {
     if (SUPABASE_HABILITADO) await getSupabase().auth.signOut();
